@@ -1,30 +1,12 @@
-import { pipe } from "fp-ts/function";
-import { Either, left, right, bindW, map } from 'fp-ts/Either';
+type Result<A, E> = [null, A] | [E, null];
 
-function divide(rightNum: number) {
-  return function (leftNum: number): Either<RangeError, number> {
-    if (rightNum === 0) {
-      return left(new RangeError('zero divide!'))
-    }
-
-    return right(leftNum / rightNum);
+function execute<A, E>(func: () => Result<A, E>): E | A {
+  const [err, data] = func();
+  if (err) {
+    return err;
+  } else {
+    return data;
   }
 }
-
-function pow(rightNum: number) {
-  return function (leftNum: number): Either<RangeError, number> {
-    if (leftNum < 0) {
-      return left(new RangeError('Imaginary Number Possible!'))
-    }
-
-    return right(Math.pow(leftNum, rightNum));
-  }
-}
-
-function callerFunc(val: number): Either<RangeError, number> {
-  return pipe(
-    bindW('divided', () => divide(2)(val)),
-    bindW('powed', () => pow(0.5)(val)),
-    map(({ divided, powed }) => (divided * powed)),
-  );
-}
+// Type 'A | null' is not assignable to type 'A | E'.
+//   Type 'null' is not assignable to type 'A | E'.
