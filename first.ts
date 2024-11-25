@@ -1,15 +1,15 @@
 class NumberError {
-  public readonly className = 'NumberError';
+  readonly #className = 'NumberError';
   constructor(public readonly message: string) {}
 };
 
 class StringError {
-  public readonly className = 'StringError';
+  readonly #className = 'StringError';
   constructor(public readonly message: string) {}
 };
 
 class IntegerError extends NumberError {
-  public readonly className = 'IntegerError';
+  readonly #className = 'IntegerError';
   constructor(public readonly message: string) { super(message); }
 }
 
